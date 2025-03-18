@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sales Forecasting Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Add Chart.js -->
+</head>
+<body>
+    <h1>Welcome to the Sales Forecasting Dashboard</h1>
+    <canvas id="salesChart"></canvas> <!-- Canvas for Chart -->
+
+    <script>
+        fetch('http://127.0.0.1:5000/sales_data')
+        .then(response => response.json())
+        .then(data => {
+            console.log("Fetched Data:", data);
+
+            // Get chart canvas
+            const ctx = document.getElementById('salesChart').getContext('2d');
+
+            // Create Chart
+            new Chart(ctx, {
+                type: 'bar', // You can change to 'line' if needed
+                data: {
+                    labels: data.month,
+                    datasets: [{
+                        label: 'Sales Forecast',
+                        data: data.sales,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
